@@ -50,6 +50,21 @@
      name: samba
      state: latest
 
+  - name: change e-mail address for admin
+    tags: apache,centos,httpd
+    lineinfile:
+       path: /etc/httpd/conf/httpd.conf
+       regexp: '^ServerAdmin'
+       line: ServerAdmin sam@gmail.com 
+    register: httpd
+
+  - name: restart httpd in centos
+    tags: apache,httpd,centos
+    service: 
+      name: httpd
+      state: restarted
+    when: httpd.changed
+
   - name: Copy default HTML file to server
     tags: apache,apache2,httpd
     copy:
@@ -71,3 +86,10 @@
        mode: 0755
        owner: root
        group: root
+
+  - name: start httpd (Centos)
+    tags: httpd,service,apache,centos
+    service:
+       name: httpd
+       state: started
+       enabled: yes
