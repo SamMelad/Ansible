@@ -1,0 +1,25 @@
+---
+- hosts: all
+  become: true
+  tasks: 
+
+  - name: create simone user
+    tags: always
+    user:
+      name: simone
+      groups: root
+   
+  - name: Add ssh key for user
+    tags: always
+    authorized_key:
+       user: simone
+       key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCagYsbrVc1bZurXRY7WwiGbDXT3+IroUTxqLvWKegzffww0JevBCkoRzkODqlvkknBYdWCuPXNRTFJnT3ypWw9F8bbv8D4JARD46eu5y3AWNe7KA/jOqYMwHijNa7CCg9F+CUCczBtExYkPWmLEoUnG9tYNn8vQOUxqgwh0zCMUl4vAHHuA7+dlMvMgVto31z6jksTD6aMHopDGbAOPzQSwYwl7Kc1tD8CLxoMIBBakXDW88V2yBIxpUdFjs3b45pX0tECyf0fDgkTdBTJMy0P3CQOInWNCd9QrH+PtymRclTBKfOnpplldgZw1hFg0esfGmZgwX83HAlO/W3t7uvSZhh98tWaV7U+YQDgxlvLSojDRniOjrKPbcfYLE6BIbl9VcGaipGjLimIYnU+hvH7ddVeeZHpofVM0ustHpmoLYIImoPdpLa/vf2jpiEuWl1SOJVHEX/3eiEad9SycwYKBAED8yA5TO7Psp6fKeYyQquyOtvtdD6VLi5tURpYx88= ec2-user@ip-172-31-82-21.ec2.interna"
+
+  - name: Add sudoers file for user
+    copy:
+      src: ./files/sudoer_simone
+      dest: /etc/sudoers.d/simone
+      owner: root
+      group: root
+      mode: 0440
+
